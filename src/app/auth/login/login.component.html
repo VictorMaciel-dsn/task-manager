@@ -1,0 +1,24 @@
+<div class="login-container">
+    <h1 *ngIf="!isRegistering">Entre - TaskManager</h1>
+    <h1 *ngIf="isRegistering">Cadastre-se - TaskManager</h1>
+
+    <form (submit)="isRegistering ? register() : login(); $event.preventDefault()">
+        <div class="form-group">
+            <label for="email">E-mail</label>
+            <input id="email" type="email" [(ngModel)]="email" placeholder="Digite seu e-mail" name="email" required />
+        </div>
+        <div class="form-group">
+            <label for="password">Senha</label>
+            <input id="password" type="password" [(ngModel)]="password" placeholder="Digite sua senha" name="password"
+                required />
+        </div>
+        <button type="submit" class="login-button">{{ isRegistering ? 'Cadastrar' : 'Entrar' }}</button>
+        <p class="error-message" *ngIf="errorMessage">{{ errorMessage }}</p>
+    </form>
+
+    <p class="toggle-mode">
+        <a href="#" (click)="toggleRegisterMode(); $event.preventDefault()">
+            {{ isRegistering ? 'Já possui conta? Faça login.' : 'Não possui conta? Cadastre-se.' }}
+        </a>
+    </p>
+</div>

@@ -1,0 +1,55 @@
+<div class="task-manager">
+    <h1>Gestão de Tarefas</h1>
+    <div class="logout-button">
+        <button class="logout" (click)="logout()">Sair</button>
+    </div>
+
+    <form (submit)="addTask(); $event.preventDefault()">
+        <h2>Adicionar Tarefa</h2>
+        <input type="text" [(ngModel)]="newTask.title" placeholder="Título" required name="title" />
+        <input type="text" [(ngModel)]="newTask.description" placeholder="Descrição" required name="description" />
+        <input type="date" [(ngModel)]="newTask.dueDate" placeholder="Data de vencimento" required name="dueDate" />
+        <input type="text" [(ngModel)]="newTask.cpf" placeholder="CPF Responsável" required name="cpf" />
+        <input type="email" [(ngModel)]="newTask.email" placeholder="E-mail responsável" required name="email" />
+        <input type="text" [(ngModel)]="newTask.name" placeholder="Nome responsável" required name="name" />
+        <select [(ngModel)]="newTask.status" required name="status">
+            <option value="pendente">Pendente</option>
+            <option value="em andamento">Em Andamento</option>
+            <option value="concluída">Concluída</option>
+        </select>
+        <button type="submit">Adicionar Tarefa</button>
+    </form>
+
+    <div class="task-list">
+        <h2>Lista de Tarefas</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Título</th>
+                    <th>Descrição</th>
+                    <th>Data de Vencimento</th>
+                    <th>Responsável</th>
+                    <th>Status</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let task of tasks">
+                    <td>{{ task.title }}</td>
+                    <td>{{ task.description }}</td>
+                    <td>{{ task.dueDate }}</td>
+                    <td>
+                        {{ task.name }} ({{ task.email }})<br />
+                        CPF: {{ task.cpf }}
+                    </td>
+                    <td>{{ task.status }}</td>
+                    <td>
+                        <button class="delete-button" *ngIf="task.id" (click)="deleteTask(task.id)">
+                            Excluir
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

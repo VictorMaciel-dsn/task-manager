@@ -1,0 +1,130 @@
+.login-container {
+  width: 380px;
+  padding: 30px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 0.5s ease-in-out;
+
+  h1 {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+  }
+
+  .toggle-mode {
+    text-align: center;
+    margin-top: 10px;
+
+    a {
+      font-size: 14px;
+      color: #007bff;
+      text-decoration: none;
+      cursor: pointer;
+      transition: color 0.3s;
+
+      &:hover {
+        color: #0056b3;
+      }
+    }
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+
+    label {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #555;
+      display: block;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      font-size: 14px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      transition: border-color 0.3s;
+
+      &:focus {
+        border-color: #007bff;
+        outline: none;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+      }
+    }
+  }
+
+  .login-button {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition:
+      background-color 0.3s,
+      transform 0.2s;
+
+    &:hover {
+      background-color: #0056b3;
+      transform: translateY(-2px);
+    }
+
+    &:active {
+      transform: translateY(1px);
+    }
+  }
+
+  .error-message {
+    font-size: 14px;
+    color: red;
+    margin-top: 10px;
+    text-align: center;
+  }
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .login-container {
+    padding: 20px;
+
+    h1 {
+      font-size: 20px;
+    }
+
+    .form-group {
+      label {
+        font-size: 13px;
+      }
+
+      input {
+        padding: 10px;
+        font-size: 13px;
+      }
+    }
+
+    .login-button {
+      font-size: 14px;
+      padding: 10px;
+    }
+  }
+}
+
+/* Animação de entrada */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
