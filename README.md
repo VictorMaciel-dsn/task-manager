@@ -25,7 +25,7 @@ Este projeto consiste em um sistema de Gestão de Tarefas desenvolvido com Angul
   - CPF, e-mail e nome do responsável
   - Status da tarefa: pendente, em andamento ou concluída
 - **Listagem de Tarefas:**  
-  As tarefas são exibidas em uma lista responsiva, filtrável e de fácil navegação.
+  As tarefas são exibidas em uma lista responsiva e de fácil navegação.
 
 ### **Armazenamento**
 
