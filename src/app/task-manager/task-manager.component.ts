@@ -7,6 +7,7 @@ import {
   doc,
   deleteDoc,
   addDoc,
+  updateDoc,
   query,
   orderBy,
   FirestoreDataConverter,
@@ -14,7 +15,6 @@ import {
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
-// Define a interface Task
 interface Task {
   id?: string;
   title: string;
@@ -26,10 +26,9 @@ interface Task {
   status: string;
 }
 
-// Conversor para transformar os dados do Firestore para a interface Task
 const taskConverter: FirestoreDataConverter<Task> = {
   toFirestore(task: Task): any {
-    return { ...task }; // Converte o objeto Task para o formato do Firestore
+    return { ...task };
   },
   fromFirestore(snapshot: any): Task {
     const data = snapshot.data();
@@ -64,23 +63,33 @@ export class TaskManagerComponent implements OnInit {
     name: '',
     status: 'pendente',
   };
+  isEditing: boolean = false;
+  editingTaskId?: string;
 
   constructor(private firestore: Firestore, private auth: Auth) {}
 
   ngOnInit() {
     const tasksCollection = collection(this.firestore, 'tasks').withConverter(
       taskConverter
-    ); // Adiciona o conversor
+    );
     const q = query(tasksCollection, orderBy('dueDate'));
 
     collectionData(q, { idField: 'id' }).subscribe(
       (tasks: Task[]) => {
-        this.tasks = tasks; // Agora o TypeScript entende que tasks é um array de Task
+        this.tasks = tasks;
       },
       (error: any) => {
         console.error('Erro ao carregar as tarefas:', error);
       }
     );
+  }
+
+  onSubmit() {
+    if (this.isEditing && this.editingTaskId) {
+      this.updateTask();
+    } else {
+      this.addTask();
+    }
   }
 
   addTask() {
@@ -94,6 +103,32 @@ export class TaskManagerComponent implements OnInit {
         this.resetForm();
       })
       .catch((error) => console.error('Erro ao adicionar tarefa:', error));
+  }
+
+  editTask(task: Task) {
+    this.isEditing = true;
+    this.editingTaskId = task.id;
+    this.newTask = { ...task };
+  }
+
+  updateTask() {
+    if (!this.editingTaskId) return;
+
+    const taskDoc = doc(
+      this.firestore,
+      `tasks/${this.editingTaskId}`
+    ).withConverter(taskConverter);
+    updateDoc(taskDoc, { ...this.newTask })
+      .then(() => {
+        alert('Tarefa atualizada com sucesso!');
+        this.tasks = this.tasks.map((task) =>
+          task.id === this.editingTaskId
+            ? { ...this.newTask, id: task.id }
+            : task
+        );
+        this.resetForm();
+      })
+      .catch((error) => console.error('Erro ao atualizar tarefa:', error));
   }
 
   deleteTask(taskId: string | undefined) {
@@ -113,6 +148,10 @@ export class TaskManagerComponent implements OnInit {
       .catch((error) => console.error('Erro ao excluir tarefa:', error));
   }
 
+  cancelEdit() {
+    this.resetForm();
+  }
+
   resetForm() {
     this.newTask = {
       title: '',
@@ -123,6 +162,8 @@ export class TaskManagerComponent implements OnInit {
       name: '',
       status: 'pendente',
     };
+    this.isEditing = false;
+    this.editingTaskId = undefined;
   }
 
   logout() {

@@ -4,8 +4,9 @@
         <button class="logout" (click)="logout()">Sair</button>
     </div>
 
-    <form (submit)="addTask(); $event.preventDefault()">
-        <h2>Adicionar Tarefa</h2>
+    <form (submit)="onSubmit(); $event.preventDefault()">
+        <h2 *ngIf="!isEditing">Adicionar Tarefa</h2>
+        <h2 *ngIf="isEditing">Editar Tarefa</h2>
         <input type="text" [(ngModel)]="newTask.title" placeholder="Título" required name="title" />
         <input type="text" [(ngModel)]="newTask.description" placeholder="Descrição" required name="description" />
         <input type="date" [(ngModel)]="newTask.dueDate" placeholder="Data de vencimento" required name="dueDate" />
@@ -17,7 +18,8 @@
             <option value="em andamento">Em Andamento</option>
             <option value="concluída">Concluída</option>
         </select>
-        <button type="submit">Adicionar Tarefa</button>
+        <button type="submit">{{ isEditing ? 'Salvar' : 'Adicionar' }} Tarefa</button>
+        <button *ngIf="isEditing" type="button" (click)="cancelEdit()">Cancelar</button>
     </form>
 
     <div class="task-list">
@@ -43,9 +45,12 @@
                         CPF: {{ task.cpf }}
                     </td>
                     <td>{{ task.status }}</td>
-                    <td>
+                    <td class="action-buttons">
+                        <button class="edit-button" (click)="editTask(task)">
+                            <i class="fas fa-pencil-alt"></i>
+                        </button>
                         <button class="delete-button" *ngIf="task.id" (click)="deleteTask(task.id)">
-                            Excluir
+                            <i class="fas fa-trash"></i>
                         </button>
                     </td>
                 </tr>
