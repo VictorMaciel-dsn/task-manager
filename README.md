@@ -53,8 +53,8 @@ Certifique-se de ter os seguintes itens instalados:
 1. **Clone este repositório:**
 
    ```bash
-   git clone https://github.com/seu-usuario/nome-do-repositorio.git
-   cd nome-do-repositorio
+   git clone https://github.com/VictorMaciel-dsn/task-manager.git
+   cd task-manager
    ```
 
 2. **Instale as dependências:**
@@ -89,6 +89,26 @@ Certifique-se de ter os seguintes itens instalados:
    ```bash
    ng serve
    ```
+
+   Obs.: Se por acaso ocorrer algum erro depois de instalar as dependências do projeto, no momento em que for rodar o projeto, faça a seguinte alteração:
+
+   No arquivo onde ocorre o erro: node_modules/rxfire/firestore/lite/interfaces.d.ts. O problema está na definição do tipo CountSnapshot. Especificamente, o tipo lite.AggregateQuerySnapshot não suporta múltiplos argumentos genéricos; ele precisa de apenas um argumento.
+
+   Aqui está o ajuste necessário:
+
+   import type \* as lite from 'firebase/firestore/lite';
+
+   export type DocumentReference<T> = lite.DocumentReference<T>;
+   export type DocumentData = lite.DocumentData;
+   export type Query<T> = lite.Query<T>;
+   export type DocumentSnapshot<T> = lite.DocumentSnapshot<T>;
+   export type QuerySnapshot<T> = lite.QuerySnapshot<T>;
+   export type QueryDocumentSnapshot<T> = lite.QueryDocumentSnapshot<T>;
+
+// Corrigindo a definição de CountSnapshot
+export type CountSnapshot = lite.AggregateQuerySnapshot<{
+count: lite.AggregateField<number>;
+}>;
 
 5. **Acesse a aplicação no navegador:**
    Abra [http://localhost:4200](http://localhost:4200).
